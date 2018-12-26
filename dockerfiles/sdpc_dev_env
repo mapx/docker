@@ -1,0 +1,4 @@
+FROM l.gcr.io/google/bazel
+
+RUN apt update && apt install libjpeg-turbo8-dev -y
+ENTRYPOINT ["bash"]

@@ -1,0 +1,14 @@
+#ref https://github.com/BurntSushi/erd
+
+FROM haskell
+
+RUN apt-get update && \
+    apt-get install -y graphviz && \
+    cabal update && cabal install --allow-newer erd && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm -f /var/cache/apt/archives/*.deb && \
+    rm -f /var/cache/apt/archives/partial/*.deb && \
+    rm -f /var/cache/apt/*.bin
+
+ENTRYPOINT ["erd"]
+CMD ["-h"]

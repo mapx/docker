@@ -1,0 +1,17 @@
+FROM alpine:latest AS builder
+
+RUN apk --no-cache add cmake doxygen g++ make python3 \
+    && ln -s /usr/bin/python3 /usr/bin/python \
+    && wget -c https://github.com/BYVoid/OpenCC/archive/master.tar.gz \
+    && tar xf master.tar.gz \
+    && mkdir OpenCC-master/build && cd OpenCC-master/build \
+    && cmake .. -D BUILD_DOCUMENTATION=OFF -D BUILD_SHARED_LIBS=OFF \
+    && make install \
+    && strip /usr/local/bin/opencc*
+    
+
+FROM alpine:latest
+
+COPY --from=builder /usr/local/bin/opencc* /usr/local/bin/
+COPY --from=builder ["/usr/lib/libstdc++.so.6", "/usr/lib/libgcc_s.so.1", "/usr/lib/"]
+COPY --from=builder /usr/local/share/opencc  /usr/local/share/opencc

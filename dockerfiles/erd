@@ -3,7 +3,7 @@
 FROM haskell
 
 RUN apt-get update && \
-    apt-get install -y graphviz && \
+    apt-get install -y –no-install-recommends graphviz && \
     cabal update && cabal install --allow-newer erd && \
     rm -rf /var/lib/apt/lists/*
 
